@@ -108,9 +108,9 @@
             this.webBrowser1.ActivateBrowserOnCreation = false;
             this.webBrowser1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 41);
+            this.webBrowser1.Location = new System.Drawing.Point(0, 43);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(1264, 640);
+            this.webBrowser1.Size = new System.Drawing.Size(1264, 638);
             this.webBrowser1.TabIndex = 7;
             // 
             // Form1

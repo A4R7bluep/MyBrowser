@@ -18,7 +18,7 @@ namespace browserTest
             InitializeComponent();
 
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
-            OpenWebPage("www.duckduckgo.com");
+            OpenWebPage("duckduckgo.com");
         }
 
         private string[] lastPages = { };
@@ -33,13 +33,29 @@ namespace browserTest
 
         private void OpenWebPage(string page)
         {
-            if (!page.StartsWith("https://") || !page.StartsWith("http://")) {
+            /*if (!page.StartsWith("https://") || !page.StartsWith("http://") || !page.StartsWith("www.")) {
+                if (!page.EndsWith(".com/") || !page.EndsWith(".gov/") || !page.EndsWith(".org/") || !page.EndsWith(".xyz/"))
+                {
+                    page = "duckduckgo.com/?q=" + page;
+                }
+                label1.Text = page;
                 page = "https://" + page;
                 lastPages.Append(page);
                 webBrowser1.Load(page);
                 System.Threading.Thread.Sleep(500);
                 textBox1.Text = webBrowser1.Address;
-            }
+            }*/
+
+            /*if (!page.Contains(".com") || !page.Contains(".gov") || !page.Contains(".org") || !page.Contains(".xyz") || !page.Contains(".net"))
+            {
+                page = "https://duckduckgo.com/?q=" + page;
+            }*/
+
+            page = "https://" + page;
+            lastPages.Append(page);
+            webBrowser1.Load(page);
+            System.Threading.Thread.Sleep(500);
+            textBox1.Text = webBrowser1.Address;
         }
 
         private void button1_Click(object sender, EventArgs e)
