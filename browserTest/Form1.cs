@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
+using CefSharp;
+using CefSharp.WinForms;
 
 namespace browserTest
 {
@@ -12,6 +14,7 @@ namespace browserTest
             InitializeComponent();
 
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+            tabControl1.TabPages[0].Controls.Add(new ChromiumWebBrowser("https://duckduckgo.com"));
             OpenWebPage("https://duckduckgo.com");
         }
 
@@ -28,41 +31,43 @@ namespace browserTest
 
         private void OpenWebPage(string page)
         {
-            if (Uri.TryCreate(page, UriKind.Absolute, out uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
+            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+
+            if (!(Uri.TryCreate(page, UriKind.Absolute, out uriResult)
+                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)))
+            {
+                page = "https://duckduckgo.com/?q=" + page + "&ia=web";
+            }
+            else
             {
                 page = uriResult.ToString();
             }
-            else if (!(Uri.TryCreate(page, UriKind.Absolute, out uriResult)
-                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)))
-            {
-                page = "https://duckduckgo.com/?q=" + page;
-            }
 
             lastPages.Append(page);
-            webBrowser1.Load(page);
+            currentBrowser.Load(page);
             System.Threading.Thread.Sleep(500);
-            textBox1.Text = webBrowser1.Address;
+            textBox1.Text = currentBrowser.Address;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //webBrowser1.GoBack();
+            //currentBrowser.GoBack();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //webBrowser1.GoForward();
+            //currentBrowser.GoForward();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            OpenWebPage("www.duckduckgo.com");
+            OpenWebPage("https://duckduckgo.com");
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            webBrowser1.Refresh();
+            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            currentBrowser.Refresh();
         }
 
         private void textBox1_Click(object sender, EventArgs e)
@@ -72,12 +77,35 @@ namespace browserTest
 
         private void textBox1_Unfocus(object sender, EventArgs e)
         {
-            textBox1.Text = webBrowser1.Address;
+            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            textBox1.Text = currentBrowser.Address;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             OpenWebPage(textBox1.Text);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            TabPage newTabPage = new TabPage("New Tab");
+            ChromiumWebBrowser newBrowser = new ChromiumWebBrowser();
+            newBrowser.Dock = DockStyle.Fill;
+            newBrowser.Load("https://duckduckgo.com");
+            newTabPage.BackColor = System.Drawing.Color.Black;
+            newTabPage.Controls.Add(newBrowser);
+            tabControl1.TabPages.Add(newTabPage);
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            tabControl1.Height = this.Height - 85;
+            textBox1.Width = this.Width - 250;
         }
     }
 }
