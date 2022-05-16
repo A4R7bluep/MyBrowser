@@ -14,6 +14,16 @@ namespace browserTest
             InitializeComponent();
 
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(CheckEnterKeyPress);
+
+            TabPage newTabPage = new TabPage("New Tab");
+            ChromiumWebBrowser newBrowser = new ChromiumWebBrowser();
+            newBrowser.Dock = DockStyle.Fill;
+            newBrowser.Load("https://duckduckgo.com");
+            newBrowser.TitleChanged += OnBrowserTitleChanged;
+            newTabPage.BackColor = System.Drawing.Color.Black;
+            newTabPage.Controls.Add(newBrowser);
+            tabControl1.TabPages.Add(newTabPage);
+
             tabControl1.TabPages[0].Controls.Add(new ChromiumWebBrowser("https://duckduckgo.com"));
             OpenWebPage("https://duckduckgo.com");
         }
@@ -106,6 +116,26 @@ namespace browserTest
         {
             tabControl1.Height = this.Height - 85;
             textBox1.Width = this.Width - 250;
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            textBox1.Text = currentBrowser.Address;
+        }
+
+        private void OnBrowserTitleChanged(object sender, TitleChangedEventArgs args)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(
+                    new MethodInvoker(
+                    delegate () { OnBrowserTitleChanged(sender, args); }));
+            }
+            else
+            {
+                tabControl1.SelectedTab.Text = args.Title;
+            }
         }
     }
 }
