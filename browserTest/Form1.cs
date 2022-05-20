@@ -20,6 +20,8 @@ namespace browserTest
             newBrowser.Dock = DockStyle.Fill;
             newBrowser.Load("https://duckduckgo.com");
             newBrowser.TitleChanged += OnBrowserTitleChanged;
+            newBrowser.MouseDown += new System.Windows.Forms.MouseEventHandler(Browser_MouseDown);
+
             newTabPage.BackColor = System.Drawing.Color.Black;
             newTabPage.Controls.Add(newBrowser);
             tabControl1.TabPages.Add(newTabPage);
@@ -55,13 +57,13 @@ namespace browserTest
 
             lastPages.Append(page);
             currentBrowser.Load(page);
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(100);
             textBox1.Text = currentBrowser.Address;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //currentBrowser.GoBack();
+            //currentBrowser.GoForward();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -114,8 +116,13 @@ namespace browserTest
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            tabControl1.Height = this.Height - 85;
-            textBox1.Width = this.Width - 250;
+            tabControl1.Height = this.Height - 75;
+            tabControl1.Width = this.Width - 65;
+
+            textBox1.Width = this.Width - 245;
+
+            tableLayoutPanel1.Location = new System.Drawing.Point(this.Width - (int)(tableLayoutPanel1.Width * 1.2), 0);
+            tableLayoutPanel1.ColumnStyles[4].Width = this.Width - 245;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -136,6 +143,11 @@ namespace browserTest
             {
                 tabControl1.SelectedTab.Text = args.Title;
             }
+        }
+
+        private void Browser_MouseDown(object sender, MouseEventArgs e)
+        {
+            System.Console.WriteLine(e);
         }
     }
 }
