@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using CefSharp;
 using CefSharp.WinForms;
@@ -32,6 +33,11 @@ namespace browserTest
 
         private string[] lastPages = { };
         private Uri uriResult;
+        // yt, 
+        private bool[] specialButtonOpen = { false };
+
+        // Special Buttons
+        private ChromiumWebBrowser ytBrowser = new ChromiumWebBrowser("https://www.youtube.com");
 
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -114,6 +120,31 @@ namespace browserTest
             tabControl1.TabPages.Remove(tabControl1.SelectedTab);
         }
 
+        private void button8_Click(object sender, EventArgs e)
+        {
+            ytBrowser.Visible = false;
+            ytBrowser.Dock = DockStyle.None;
+            this.Controls.Add(ytBrowser);
+
+            if (specialButtonOpen[0])
+            {
+                ytBrowser.Visible = false;
+                tabControl1.Visible = true;
+                specialButtonOpen[0] = false;
+            }
+
+            else
+            {
+                ytBrowser.Visible = true;
+                ytBrowser.Height = this.Height - 75;
+                ytBrowser.Width = this.Width - 50;
+                ytBrowser.Location = new System.Drawing.Point(36, 35);
+                tabControl1.Visible = false;
+
+                specialButtonOpen[0] = true;
+            }
+        }
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             tabControl1.Height = this.Height - 75;
@@ -123,6 +154,9 @@ namespace browserTest
 
             tableLayoutPanel1.Location = new System.Drawing.Point(this.Width - (int)(tableLayoutPanel1.Width * 1.2), 0);
             tableLayoutPanel1.ColumnStyles[4].Width = this.Width - 245;
+
+            ytBrowser.Height = this.Height - 75;
+            ytBrowser.Width = this.Width - 50;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
