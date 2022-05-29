@@ -33,11 +33,13 @@ namespace browserTest
 
         private string[] lastPages = { };
         private Uri uriResult;
-        // yt, 
-        private bool[] specialButtonOpen = { false };
+        // yt, discord, twitch
+        private bool[] specialButtonOpen = { false, false, false };
 
         // Special Buttons
         private ChromiumWebBrowser ytBrowser = new ChromiumWebBrowser("https://www.youtube.com");
+        private ChromiumWebBrowser discordBrowser = new ChromiumWebBrowser("https://www.discord.com");
+        private ChromiumWebBrowser twitchBrowser = new ChromiumWebBrowser("https://www.twitch.tv/");
 
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
@@ -67,44 +69,48 @@ namespace browserTest
             textBox1.Text = currentBrowser.Address;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        /*
+         * Top bar buttons and address box
+         */
+
+        private void backButton_Click(object sender, EventArgs e)
         {
             //currentBrowser.GoForward();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void forwardButton_Click(object sender, EventArgs e)
         {
             //currentBrowser.GoForward();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void homeButton_Click(object sender, EventArgs e)
         {
             OpenWebPage("https://duckduckgo.com");
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void reloadButton_Click(object sender, EventArgs e)
         {
             ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
             currentBrowser.Refresh();
         }
 
-        private void textBox1_Click(object sender, EventArgs e)
+        private void addressBox_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
         }
 
-        private void textBox1_Unfocus(object sender, EventArgs e)
+        private void addressBox_Unfocus(object sender, EventArgs e)
         {
             ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
             textBox1.Text = currentBrowser.Address;
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void closeTabButton_Click(object sender, EventArgs e)
         {
             OpenWebPage(textBox1.Text);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void newTabButton_Click(object sender, EventArgs e)
         {
             TabPage newTabPage = new TabPage("New Tab");
             ChromiumWebBrowser newBrowser = new ChromiumWebBrowser();
@@ -115,13 +121,22 @@ namespace browserTest
             tabControl1.TabPages.Add(newTabPage);
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void searchButton_Click(object sender, EventArgs e)
         {
             tabControl1.TabPages.Remove(tabControl1.SelectedTab);
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        /* 
+         * Special buttons on left side
+         */
+
+        private void ytButton_Click(object sender, EventArgs e)
         {
+            discordBrowser.Visible = false;
+            specialButtonOpen[1] = false;
+            twitchBrowser.Visible = false;
+            specialButtonOpen[2] = false;
+
             ytBrowser.Visible = false;
             ytBrowser.Dock = DockStyle.None;
             this.Controls.Add(ytBrowser);
@@ -144,6 +159,70 @@ namespace browserTest
                 specialButtonOpen[0] = true;
             }
         }
+
+        private void discordButton_Click(object sender, EventArgs e)
+        {
+            ytBrowser.Visible = false;
+            specialButtonOpen[0] = false;
+            twitchBrowser.Visible = false;
+            specialButtonOpen[2] = false;
+
+            discordBrowser.Visible = false;
+            discordBrowser.Dock = DockStyle.None;
+            this.Controls.Add(discordBrowser);
+
+            if (specialButtonOpen[1])
+            {
+                discordBrowser.Visible = false;
+                tabControl1.Visible = true;
+                specialButtonOpen[1] = false;
+            }
+
+            else
+            {
+                discordBrowser.Visible = true;
+                discordBrowser.Height = this.Height - 75;
+                discordBrowser.Width = this.Width - 50;
+                discordBrowser.Location = new System.Drawing.Point(36, 35);
+                tabControl1.Visible = false;
+
+                specialButtonOpen[1] = true;
+            }
+        }
+
+        private void twitchButton_Click(object sender, EventArgs e)
+        {
+            ytBrowser.Visible = false;
+            specialButtonOpen[0] = false;
+            discordBrowser.Visible = false;
+            specialButtonOpen[1] = false;
+
+            twitchBrowser.Visible = false;
+            twitchBrowser.Dock = DockStyle.None;
+            this.Controls.Add(twitchBrowser);
+
+            if (specialButtonOpen[2])
+            {
+                twitchBrowser.Visible = false;
+                tabControl1.Visible = true;
+                specialButtonOpen[2] = false;
+            }
+
+            else
+            {
+                twitchBrowser.Visible = true;
+                twitchBrowser.Height = this.Height - 75;
+                twitchBrowser.Width = this.Width - 50;
+                twitchBrowser.Location = new System.Drawing.Point(36, 35);
+                tabControl1.Visible = false;
+
+                specialButtonOpen[2] = true;
+            }
+        }
+
+        /*
+         * Event Handlers
+         */
 
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -170,8 +249,8 @@ namespace browserTest
             if (this.InvokeRequired)
             {
                 this.Invoke(
-                    new MethodInvoker(
-                    delegate () { OnBrowserTitleChanged(sender, args); }));
+                    new MethodInvoker(delegate () { OnBrowserTitleChanged(sender, args); })
+                );
             }
             else
             {
