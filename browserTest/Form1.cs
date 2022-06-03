@@ -7,10 +7,10 @@ using CefSharp.WinForms;
 
 namespace browserTest
 {
-    public partial class Form1 : Form
+    public partial class Application : Form
     {
         // Constructor
-        public Form1()
+        public Application()
         {
             InitializeComponent();
 
@@ -25,9 +25,9 @@ namespace browserTest
 
             newTabPage.BackColor = System.Drawing.Color.Black;
             newTabPage.Controls.Add(newBrowser);
-            tabControl1.TabPages.Add(newTabPage);
+            tabContainer.TabPages.Add(newTabPage);
 
-            tabControl1.TabPages[0].Controls.Add(new ChromiumWebBrowser("https://duckduckgo.com"));
+            tabContainer.TabPages[0].Controls.Add(new ChromiumWebBrowser("https://duckduckgo.com"));
             OpenWebPage("https://duckduckgo.com");
         }
 
@@ -51,7 +51,7 @@ namespace browserTest
 
         private void OpenWebPage(string page)
         {
-            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
 
             if (!(Uri.TryCreate(page, UriKind.Absolute, out uriResult)
                 && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps)))
@@ -73,44 +73,44 @@ namespace browserTest
          * Top bar buttons and address box
          */
 
-        private void backButton_Click(object sender, EventArgs e)
+        private void BackButton_Click(object sender, EventArgs e)
         {
             //currentBrowser.GoForward();
         }
 
-        private void forwardButton_Click(object sender, EventArgs e)
+        private void ForwardButton_Click(object sender, EventArgs e)
         {
             //currentBrowser.GoForward();
         }
 
-        private void homeButton_Click(object sender, EventArgs e)
+        private void HomeButton_Click(object sender, EventArgs e)
         {
             OpenWebPage("https://duckduckgo.com");
         }
 
-        private void reloadButton_Click(object sender, EventArgs e)
+        private void ReloadButton_Click(object sender, EventArgs e)
         {
-            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
             currentBrowser.Refresh();
         }
 
-        private void addressBox_Click(object sender, EventArgs e)
+        private void AddressBox_Click(object sender, EventArgs e)
         {
             textBox1.Text = "";
         }
 
-        private void addressBox_Unfocus(object sender, EventArgs e)
+        private void AddressBox_Unfocus(object sender, EventArgs e)
         {
-            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
             textBox1.Text = currentBrowser.Address;
         }
 
-        private void closeTabButton_Click(object sender, EventArgs e)
+        private void CloseTabButton_Click(object sender, EventArgs e)
         {
             OpenWebPage(textBox1.Text);
         }
 
-        private void newTabButton_Click(object sender, EventArgs e)
+        private void NewTabButton_Click(object sender, EventArgs e)
         {
             TabPage newTabPage = new TabPage("New Tab");
             ChromiumWebBrowser newBrowser = new ChromiumWebBrowser();
@@ -118,19 +118,19 @@ namespace browserTest
             newBrowser.Load("https://duckduckgo.com");
             newTabPage.BackColor = System.Drawing.Color.Black;
             newTabPage.Controls.Add(newBrowser);
-            tabControl1.TabPages.Add(newTabPage);
+            tabContainer.TabPages.Add(newTabPage);
         }
 
-        private void searchButton_Click(object sender, EventArgs e)
+        private void SearchButton_Click(object sender, EventArgs e)
         {
-            tabControl1.TabPages.Remove(tabControl1.SelectedTab);
+            tabContainer.TabPages.Remove(tabContainer.SelectedTab);
         }
 
         /* 
          * Special buttons on left side
          */
 
-        private void ytButton_Click(object sender, EventArgs e)
+        private void YtButton_Click(object sender, EventArgs e)
         {
             discordBrowser.Visible = false;
             specialButtonOpen[1] = false;
@@ -144,8 +144,11 @@ namespace browserTest
             if (specialButtonOpen[0])
             {
                 ytBrowser.Visible = false;
-                tabControl1.Visible = true;
+                tabContainer.Visible = true;
                 specialButtonOpen[0] = false;
+
+                ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
+                textBox1.Text = currentBrowser.Address;
             }
 
             else
@@ -154,13 +157,15 @@ namespace browserTest
                 ytBrowser.Height = this.Height - 75;
                 ytBrowser.Width = this.Width - 50;
                 ytBrowser.Location = new System.Drawing.Point(36, 35);
-                tabControl1.Visible = false;
+                tabContainer.Visible = false;
 
                 specialButtonOpen[0] = true;
+
+                textBox1.Text = "Youtube";
             }
         }
 
-        private void discordButton_Click(object sender, EventArgs e)
+        private void DiscordButton_Click(object sender, EventArgs e)
         {
             ytBrowser.Visible = false;
             specialButtonOpen[0] = false;
@@ -174,8 +179,11 @@ namespace browserTest
             if (specialButtonOpen[1])
             {
                 discordBrowser.Visible = false;
-                tabControl1.Visible = true;
+                tabContainer.Visible = true;
                 specialButtonOpen[1] = false;
+
+                ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
+                textBox1.Text = currentBrowser.Address;
             }
 
             else
@@ -184,13 +192,15 @@ namespace browserTest
                 discordBrowser.Height = this.Height - 75;
                 discordBrowser.Width = this.Width - 50;
                 discordBrowser.Location = new System.Drawing.Point(36, 35);
-                tabControl1.Visible = false;
+                tabContainer.Visible = false;
 
                 specialButtonOpen[1] = true;
+
+                textBox1.Text = "Discord";
             }
         }
 
-        private void twitchButton_Click(object sender, EventArgs e)
+        private void TwitchButton_Click(object sender, EventArgs e)
         {
             ytBrowser.Visible = false;
             specialButtonOpen[0] = false;
@@ -204,8 +214,11 @@ namespace browserTest
             if (specialButtonOpen[2])
             {
                 twitchBrowser.Visible = false;
-                tabControl1.Visible = true;
+                tabContainer.Visible = true;
                 specialButtonOpen[2] = false;
+
+                ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
+                textBox1.Text = currentBrowser.Address;
             }
 
             else
@@ -214,33 +227,64 @@ namespace browserTest
                 twitchBrowser.Height = this.Height - 75;
                 twitchBrowser.Width = this.Width - 50;
                 twitchBrowser.Location = new System.Drawing.Point(36, 35);
-                tabControl1.Visible = false;
+                tabContainer.Visible = false;
 
                 specialButtonOpen[2] = true;
+
+                textBox1.Text = "Twitch";
             }
+        }
+
+        private void NewSpecialButton_Click(object sender, EventArgs e)
+        {
+            specialButtonMaker.Visible = true;
+
+            specialButtonPanel.RowCount += 1;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Console.WriteLine(openFileDialog1.FileName);
+                string OpenedImage = openFileDialog1.FileName;
+                ;
+            }
+
+            Button testButton = new Button
+            {
+                Font = new System.Drawing.Font("Microsoft Sans Serif", 10),
+                //Text = "TEST",
+                Image = ,
+                BackColor = System.Drawing.SystemColors.WindowText,
+                FlatStyle = FlatStyle.Flat,
+            };
+
+            testButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
+            testButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black;
+            testButton.FlatAppearance.BorderSize = 0;
+
+            specialButtonPanel.Controls.Add(testButton);
         }
 
         /*
          * Event Handlers
          */
-
+        
         private void Form1_Resize(object sender, EventArgs e)
         {
-            tabControl1.Height = this.Height - 75;
-            tabControl1.Width = this.Width - 65;
+            tabContainer.Height = this.Height - 75;
+            tabContainer.Width = this.Width - 65;
 
             textBox1.Width = this.Width - 245;
 
-            tableLayoutPanel1.Location = new System.Drawing.Point(this.Width - (int)(tableLayoutPanel1.Width * 1.2), 0);
-            tableLayoutPanel1.ColumnStyles[4].Width = this.Width - 245;
+            topLayoutPanel.Location = new System.Drawing.Point(this.Width - (int)(topLayoutPanel.Width * 1.2), 0);
+            topLayoutPanel.ColumnStyles[4].Width = this.Width - 245;
 
             ytBrowser.Height = this.Height - 75;
             ytBrowser.Width = this.Width - 50;
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ChromiumWebBrowser currentBrowser = tabControl1.SelectedTab.Controls[0] as ChromiumWebBrowser;
+            ChromiumWebBrowser currentBrowser = tabContainer.SelectedTab.Controls[0] as ChromiumWebBrowser;
             textBox1.Text = currentBrowser.Address;
         }
 
@@ -254,7 +298,7 @@ namespace browserTest
             }
             else
             {
-                tabControl1.SelectedTab.Text = args.Title;
+                tabContainer.SelectedTab.Text = args.Title;
             }
         }
 
