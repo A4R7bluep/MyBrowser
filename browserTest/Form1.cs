@@ -41,6 +41,8 @@ namespace browserTest
         private ChromiumWebBrowser discordBrowser = new ChromiumWebBrowser("https://www.discord.com");
         private ChromiumWebBrowser twitchBrowser = new ChromiumWebBrowser("https://www.twitch.tv/");
 
+        string ButtonPage = "";
+
         private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Return)
@@ -127,7 +129,7 @@ namespace browserTest
         }
 
         /* 
-         * Special buttons on left side
+         * Special buttons on left side and button maker input
          */
 
         private void YtButton_Click(object sender, EventArgs e)
@@ -235,24 +237,30 @@ namespace browserTest
             }
         }
 
-        private void NewSpecialButton_Click(object sender, EventArgs e)
+        private void SpecialButtonMakerSubmit_Click(object sender, EventArgs e)
         {
-            specialButtonMaker.Visible = true;
+            string openedImage = "";
+            bool isPNG = false;
 
-            specialButtonPanel.RowCount += 1;
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            while (!isPNG)
             {
-                Console.WriteLine(openFileDialog1.FileName);
-                string OpenedImage = openFileDialog1.FileName;
-                ;
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    Console.WriteLine(openFileDialog1.FileName);
+                    openedImage = openFileDialog1.FileName;
+
+                    if (openedImage.EndsWith(".png"))
+                    {
+                        isPNG = false;
+                    }
+                }
             }
 
             Button testButton = new Button
             {
                 Font = new System.Drawing.Font("Microsoft Sans Serif", 10),
                 //Text = "TEST",
-                Image = ,
+                Image = System.Drawing.Image.FromFile(openedImage),
                 BackColor = System.Drawing.SystemColors.WindowText,
                 FlatStyle = FlatStyle.Flat,
             };
@@ -261,7 +269,17 @@ namespace browserTest
             testButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black;
             testButton.FlatAppearance.BorderSize = 0;
 
+            //testButton.Click += new System.EventHandler();
+
             specialButtonPanel.Controls.Add(testButton);
+        }
+
+        private void NewSpecialButton_Click(object sender, EventArgs e)
+        {
+            specialButtonMaker.Visible = true;
+            specialButtonPanel.RowCount += 1;
+
+            ButtonPage = specialButtonMakerPage.Text;
         }
 
         /*

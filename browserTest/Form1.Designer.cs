@@ -46,8 +46,9 @@
             this.button8 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.specialButtonMaker = new System.Windows.Forms.GroupBox();
-            this.specialButtonMakerPage = new System.Windows.Forms.TextBox();
+            this.button12 = new System.Windows.Forms.Button();
             this.specialButtonMakerLabel1 = new System.Windows.Forms.Label();
+            this.specialButtonMakerPage = new System.Windows.Forms.TextBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.topLayoutPanel.SuspendLayout();
             this.specialButtonPanel.SuspendLayout();
@@ -151,13 +152,13 @@
             // tabContainer
             // 
             this.tabContainer.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.tabContainer.Location = new System.Drawing.Point(36, 464);
+            this.tabContainer.Location = new System.Drawing.Point(36, 36);
             this.tabContainer.Margin = new System.Windows.Forms.Padding(0);
             this.tabContainer.Multiline = true;
             this.tabContainer.Name = "tabContainer";
             this.tabContainer.Padding = new System.Drawing.Point(0, 0);
             this.tabContainer.SelectedIndex = 0;
-            this.tabContainer.Size = new System.Drawing.Size(1228, 217);
+            this.tabContainer.Size = new System.Drawing.Size(1228, 645);
             this.tabContainer.TabIndex = 8;
             this.tabContainer.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
@@ -307,6 +308,7 @@
             // 
             // specialButtonMaker
             // 
+            this.specialButtonMaker.Controls.Add(this.button12);
             this.specialButtonMaker.Controls.Add(this.specialButtonMakerLabel1);
             this.specialButtonMaker.Controls.Add(this.specialButtonMakerPage);
             this.specialButtonMaker.ForeColor = System.Drawing.Color.White;
@@ -318,13 +320,17 @@
             this.specialButtonMaker.Text = "Make New Special Button";
             this.specialButtonMaker.Visible = false;
             // 
-            // specialButtonMakerPage
+            // button12
             // 
-            this.specialButtonMakerPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.specialButtonMakerPage.Location = new System.Drawing.Point(6, 39);
-            this.specialButtonMakerPage.Name = "specialButtonMakerPage";
-            this.specialButtonMakerPage.Size = new System.Drawing.Size(254, 23);
-            this.specialButtonMakerPage.TabIndex = 0;
+            this.button12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.button12.ForeColor = System.Drawing.Color.Black;
+            this.button12.Location = new System.Drawing.Point(98, 126);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(75, 26);
+            this.button12.TabIndex = 2;
+            this.button12.Text = "Insert";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.SpecialButtonMakerSubmit_Click);
             // 
             // specialButtonMakerLabel1
             // 
@@ -335,6 +341,14 @@
             this.specialButtonMakerLabel1.Size = new System.Drawing.Size(195, 20);
             this.specialButtonMakerLabel1.TabIndex = 1;
             this.specialButtonMakerLabel1.Text = "Input Special Button Page";
+            // 
+            // specialButtonMakerPage
+            // 
+            this.specialButtonMakerPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.specialButtonMakerPage.Location = new System.Drawing.Point(6, 39);
+            this.specialButtonMakerPage.Name = "specialButtonMakerPage";
+            this.specialButtonMakerPage.Size = new System.Drawing.Size(254, 23);
+            this.specialButtonMakerPage.TabIndex = 0;
             // 
             // openFileDialog1
             // 
@@ -388,6 +402,7 @@
         private System.Windows.Forms.TextBox specialButtonMakerPage;
         private System.Windows.Forms.Label specialButtonMakerLabel1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button button12;
     }
 }
 
