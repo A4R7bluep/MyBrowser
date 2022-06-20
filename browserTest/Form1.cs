@@ -251,7 +251,7 @@ namespace browserTest
 
                     if (openedImage.EndsWith(".png"))
                     {
-                        isPNG = false;
+                        isPNG = true;
                     }
                 }
             }
@@ -272,6 +272,7 @@ namespace browserTest
             //testButton.Click += new System.EventHandler();
 
             specialButtonPanel.Controls.Add(testButton);
+            specialButtonMaker.Visible = false;
         }
 
         private void NewSpecialButton_Click(object sender, EventArgs e)
