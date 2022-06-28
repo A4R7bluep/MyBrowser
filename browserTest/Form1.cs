@@ -43,13 +43,7 @@ namespace browserTest
 
         string ButtonPage = "";
 
-        private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Return)
-            {
-                OpenWebPage(textBox1.Text);
-            }
-        }
+        // Custom functions
 
         private void OpenWebPage(string page)
         {
@@ -69,6 +63,14 @@ namespace browserTest
             currentBrowser.Load(page);
             System.Threading.Thread.Sleep(100);
             textBox1.Text = currentBrowser.Address;
+        }
+
+        private void CheckEnterKeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Return)
+            {
+                OpenWebPage(textBox1.Text);
+            }
         }
 
         /*
@@ -259,7 +261,6 @@ namespace browserTest
             Button testButton = new Button
             {
                 Font = new System.Drawing.Font("Microsoft Sans Serif", 10),
-                //Text = "TEST",
                 Image = System.Drawing.Image.FromFile(openedImage),
                 BackColor = System.Drawing.SystemColors.WindowText,
                 FlatStyle = FlatStyle.Flat,
@@ -269,9 +270,10 @@ namespace browserTest
             testButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black;
             testButton.FlatAppearance.BorderSize = 0;
 
-            //testButton.Click += new System.EventHandler();
-
             specialButtonPanel.Controls.Add(testButton);
+            specialButtonPanel.Controls.SetChildIndex(button11, specialButtonPanel.RowCount);
+            specialButtonPanel.Controls.SetChildIndex(testButton, specialButtonPanel.RowCount - 1);
+            specialButtonMakerPage.Text = "";
             specialButtonMaker.Visible = false;
         }
 
